@@ -12,7 +12,7 @@ class RoomList extends Component {
     }
 
     handleSubmit(newRoomName) {//this will allow newRoom to get pushed to firebase...
-        if (!this.state.newRoomName) {return} 
+        if (!this.state.newRoomName) {return} // not sure 100% how this code is working
         this.roomsRef.push({ name: newRoomName });
         this.setState({ newRoomName: '' })
     }
