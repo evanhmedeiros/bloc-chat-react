@@ -21,7 +21,7 @@ class RoomList extends Component {
         this.setState({newRoomName: e.target.value })
     }
 
-    componentDidMount() {
+    componentDidMount() {        
         this.roomsRef.on('child_added', snapshot => {
             const room = snapshot.val();
             room.key = snapshot.key;

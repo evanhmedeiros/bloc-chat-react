@@ -17,11 +17,30 @@ import './App.css';
   firebase.initializeApp(config);
 
 class App extends Component {
+state={
+  activeRoom: '',
+  activeRoomName: '',
+  user: null
+}
+
+activeRoomHandle = (e) =>{ //activeRoom will filter the visible messages
+  this.setState({ activeRoom: e.target.value })
+  this.setState({ activeRoomName: e.target.name })
+}//activeRoomName will show the user the correct room name
+
+
   render() {
     return (
       <div className="App">
        <RoomList 
-       firebase={firebase}/>
+       firebase={firebase}
+       activeRoom={this.state.activeRoom}
+       activeRoomHandle={this.state.activeRoomHandle}
+       />
+       <MessageList 
+       firebase={firebase}
+       activeRoom={this.state.activeRoom}
+       />
       </div>
     );
   }
