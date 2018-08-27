@@ -1,7 +1,7 @@
 import * as firebase from 'firebase';
 import React, { Component } from 'react';
 import RoomList from './components/RoomList';
-import MessageList from './components/MessageList'
+import MessageList from './components/MessageList';
 import './App.css';
 
 
@@ -17,30 +17,62 @@ import './App.css';
   firebase.initializeApp(config);
 
 class App extends Component {
-state={
-  activeRoom: '',
-  activeRoomName: '',
-  user: null
+  constructor(props) {
+    super(props);
+    this.state={
+      addItem: '',
+      activeRoom: []
+    };
+
+    this.setActiveRoom = this.setActiveRoom.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+setActiveRoom(room) {
+  this.setState({ activeRoom: room}, () => console.log("active room:", this.state.activeRoom));
+  console.log("New room activated", room);
 }
 
-activeRoomHandle = (e) =>{ //activeRoom will filter the visible messages
-  this.setState({ activeRoom: e.target.value })
-  this.setState({ activeRoomName: e.target.name })
-}//activeRoomName will show the user the correct room name
+handleChange(e) {
+  this.setState({
+  [e.target.name]: e.target.value 
+  });
+}
+
+handleSubmit(e) {
+  e.preventDefault();
+  const itemsRef = firebase.database().ref('items');
+  const item = {
+    value: this.state.addItem,
+  }
+  itemsRef.push(item);
+  this.setState({
+    addItem: ''
+  });
+}
 
 
   render() {
+    
     return (
       <div className="App">
-       <RoomList 
-       firebase={firebase}
-       activeRoom={this.state.activeRoom}
-       activeRoomHandle={this.state.activeRoomHandle}
-       />
-       <MessageList 
-       firebase={firebase}
-       activeRoom={this.state.activeRoom}
-       />
+
+      <header>
+       <h1>Let's Go Bloc Chat!</h1>
+      </header>
+        <h2>{this.state.activeRoom.name || "Enter Your Room"}</h2>
+
+
+        <RoomList 
+        firebase={firebase} 
+        setActiveRoom={ (room) => this.setActiveRoom (room)} 
+        />
+        <MessageList 
+        firebase={firebase} 
+        activeRoom={this.state.activeRoom}
+         />
+        
       </div>
     );
   }
