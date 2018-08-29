@@ -1,7 +1,8 @@
 import * as firebase from 'firebase';
 import React, { Component } from 'react';
-import RoomList from './components/RoomList';
-import MessageList from './components/MessageList';
+import RoomList from './components/RoomList.js';
+import MessageList from './components/MessageList.js';
+import User from './components/User.js';
 import './App.css';
 
 
@@ -21,17 +22,18 @@ class App extends Component {
     super(props);
     this.state={
       addItem: '',
-      activeRoom: []
+      activeRoom: [],
+      activeUser: ""
     };
 
     this.setActiveRoom = this.setActiveRoom.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setUser = this.setUser.bind(this);
   }
 
 setActiveRoom(room) {
   this.setState({ activeRoom: room}, () => console.log("active room:", this.state.activeRoom));
-  console.log("New room activated", room);
 }
 
 handleChange(e) {
@@ -52,6 +54,10 @@ handleSubmit(e) {
   });
 }
 
+setUser(user) {
+  this.setState({activeUser: user});
+}
+
 
   render() {
     
@@ -65,13 +71,23 @@ handleSubmit(e) {
 
 
         <RoomList 
-        firebase={firebase} 
-        setActiveRoom={ (room) => this.setActiveRoom (room)} 
-        />
+        firebase = {firebase} 
+        setActiveRoom={ (room) => this.setActiveRoom(room)}
+         />
+
         <MessageList 
         firebase={firebase} 
         activeRoom={this.state.activeRoom}
+        setUser={this.state.setUser} 
+        user={this.state.activeUser}
          />
+        <User 
+        firebase={firebase} 
+        setUser= {this.setUser} 
+        activeUser={this.state.activeUser}
+        />
+
+
         
       </div>
     );
