@@ -59,7 +59,7 @@ componentDidMount() {
                   <ul> 
                   { this.state.messages.map( (message, index) => {
                   if (this.props.activeRoom.key === message.roomId) {
-                   return <li key={ index }> "{message.content}"  - {message.username} </li>
+                   return <li key={ index }> "{message.content}"  - {message.username}</li>
                   }
                    
                       })}
